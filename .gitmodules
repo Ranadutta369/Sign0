@@ -1,0 +1,3 @@
+[submodule "ASL_prediction"]
+	path = ASL_prediction
+	url = https://github.com/Agniva2006/ASL_prediction.git
