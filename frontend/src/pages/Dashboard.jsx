@@ -85,7 +85,9 @@ export default function Dashboard() {
       <div className="bg-[#111a2e] rounded-2xl p-16 flex flex-col items-center shadow-xl">
         <Video size={48} className="mb-4" />
 
-        <button className="px-8 py-3 rounded-full bg-blue-500 mb-3">
+        <button className="px-8 py-3 rounded-full bg-blue-500 mb-3"
+          onClick={()=>
+           window.open("https://asl-prediction-6ixycwc3q-agniva2006s-projects.vercel.app/","_blank")}>
           Start New Session
         </button>
 
