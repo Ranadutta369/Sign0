@@ -4,7 +4,7 @@ import { DashboardLayout } from "../components/Layout";
 import { SessionCard } from "../components/SessionCard";
 import Chatbot from "../components/Chatbot";
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_API_KEY = "AIzaSyBj1dXb_jlXzkJC85b3PbLm1u6ltBtGmLI";
 
 export default function Dashboard() {
   const fileInputRef = useRef(null);
