@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const GEMINI_API_KEY = "AIzaSyCfpNKPbDxyu4SeGurKLpAoRxRbrnu9scE";
+
 export default function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -8,31 +10,47 @@ export default function Chatbot() {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const userMsg = { role: "user", text: input };
-    setMessages([...messages, userMsg]);
+    const userText = input;
+    setMessages((prev) => [...prev, { role: "user", text: userText }]);
     setInput("");
     setLoading(true);
 
-    const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCfpNKPbDxyu4SeGurKLpAoRxRbrnu9scE",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: input }] }],
-        }),
-      }
-    );
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: `You are an ASL assistant. Answer clearly and simply.\nUser: ${userText}`,
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
 
-    const data = await res.json();
-    const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Sorry, I couldn't understand.";
+      const data = await res.json();
+      const reply =
+        data.candidates?.[0]?.content?.parts?.[0]?.text ??
+        "Sorry, I couldn't understand.";
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", text: reply },
-    ]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: reply },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "Error connecting to assistant." },
+      ]);
+    }
+
     setLoading(false);
   };
 
